@@ -1,0 +1,83 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random SVG Circles</title>
+  <style>
+    svg {
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <svg id="svg-container" width="600" height="400"></svg>
+
+  <script>
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function createRandomCircle(radius, svgWidth, svgHeight, existingCircles) {
+      const cx = getRandomNumber(radius, svgWidth - radius);
+      const cy = getRandomNumber(radius, svgHeight - radius);
+
+      // Check for collisions with existing circles
+      for (const circle of existingCircles) {
+        const distance = Math.sqrt((cx - circle.cx) ** 2 + (cy - circle.cy) ** 2);
+        if (distance < radius + circle.r) {
+          // If there is a collision, recursively try again
+          return createRandomCircle(radius, svgWidth, svgHeight, existingCircles);
+        }
+      }
+
+      return { cx, cy, r: radius };
+    }
+
+    function createRandomCirclesAndLines(numCircles, radius, svgWidth, svgHeight) {
+      const svgContainer = document.getElementById('svg-container');
+      const circles = [];
+
+      for (let i = 0; i < numCircles; i++) {
+        const circle = createRandomCircle(radius, svgWidth, svgHeight, circles);
+        circles.push(circle);
+
+        // Connect circles with lines
+        if (i > 0) {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', circles[i - 1].cx);
+          line.setAttribute('y1', circles[i - 1].cy);
+          line.setAttribute('x2', circle.cx);
+          line.setAttribute('y2', circle.cy);
+          line.setAttribute('stroke', 'black');
+          svgContainer.appendChild(line);
+        }
+
+        // Create SVG circle element
+        const circleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleElement.setAttribute('cx', circle.cx);
+        circleElement.setAttribute('cy', circle.cy);
+        circleElement.setAttribute('r', radius);
+        circleElement.setAttribute('fill', 'blue');
+        svgContainer.appendChild(circleElement);
+      }
+    }
+
+    // Adjust the parameters as needed
+    createRandomCirclesAndLines(5, 20, 600, 400);
+  </script>
+</body>
+</html>
