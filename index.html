@@ -1,83 +1,65 @@
-<!-- <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random SVG Circles</title>
+  <title>Canvas Colorful Circles with Minimum Distance</title>
   <style>
-    svg {
-      border: 1px solid #ddd;
+    canvas {
+      border: 1px solid #000;
     }
   </style>
 </head>
 <body>
-  <svg id="svg-container" width="600" height="400"></svg>
-
+  <canvas id="myCanvas" width="500" height="500"></canvas>
   <script>
-    function getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the canvas element
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
 
-    function createRandomCircle(radius, svgWidth, svgHeight, existingCircles) {
-      const cx = getRandomNumber(radius, svgWidth - radius);
-      const cy = getRandomNumber(radius, svgHeight - radius);
-
-      // Check for collisions with existing circles
-      for (const circle of existingCircles) {
-        const distance = Math.sqrt((cx - circle.cx) ** 2 + (cy - circle.cy) ** 2);
-        if (distance < radius + circle.r) {
-          // If there is a collision, recursively try again
-          return createRandomCircle(radius, svgWidth, svgHeight, existingCircles);
+      // Function to generate a random color
+      function getRandomColor() {
+        const letters = "0123456789ABCDEF";
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
         }
+        return color;
       }
 
-      return { cx, cy, r: radius };
-    }
+      // Function to generate random coordinates for circles with minimum distance
+      function getRandomCoordinates(radius, minDistance, existingCircles) {
+        let x, y;
+        do {
+          x = Math.random() * (canvas.width - 2 * radius) + radius;
+          y = Math.random() * (canvas.height - 2 * radius) + radius;
+        } while (existingCircles.some(circle => Math.hypot(circle.x - x, circle.y - y) < minDistance));
 
-    function createRandomCirclesAndLines(numCircles, radius, svgWidth, svgHeight) {
-      const svgContainer = document.getElementById('svg-container');
+        return { x, y };
+      }
+
+      // Function to draw a circle
+      function drawCircle(x, y, radius, color) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Array to store circle objects
       const circles = [];
 
-      for (let i = 0; i < numCircles; i++) {
-        const circle = createRandomCircle(radius, svgWidth, svgHeight, circles);
-        circles.push(circle);
-
-        // Connect circles with lines
-        if (i > 0) {
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', circles[i - 1].cx);
-          line.setAttribute('y1', circles[i - 1].cy);
-          line.setAttribute('x2', circle.cx);
-          line.setAttribute('y2', circle.cy);
-          line.setAttribute('stroke', 'black');
-          svgContainer.appendChild(line);
-        }
-
-        // Create SVG circle element
-        const circleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circleElement.setAttribute('cx', circle.cx);
-        circleElement.setAttribute('cy', circle.cy);
-        circleElement.setAttribute('r', radius);
-        circleElement.setAttribute('fill', 'blue');
-        svgContainer.appendChild(circleElement);
+      // Draw 20 non-overlapping colorful circles with a minimum distance of 50 pixels
+      for (let i = 0; i < 20; i++) {
+        const newCircle = getRandomCoordinates(10, 50, circles);
+        newCircle.radius = 10;
+        newCircle.color = getRandomColor();
+        circles.push(newCircle);
+        drawCircle(newCircle.x, newCircle.y, newCircle.radius, newCircle.color);
       }
-    }
-
-    // Adjust the parameters as needed
-    createRandomCirclesAndLines(5, 20, 600, 400);
+    });
   </script>
 </body>
 </html>
