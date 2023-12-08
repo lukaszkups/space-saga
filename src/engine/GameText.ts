@@ -14,12 +14,10 @@ export default class GameText extends Entity {
   letterDuration: number;
   finished: boolean;
 
-  constructor(engine: Engine, { text, width }: TextPayload) {
-    super(engine, );
-    this.engine = engine;
-    this.id = engine._counter++;
-    this.text = text || '';
-    this.width = width || this.engine.width;
+  constructor(engine: Engine, payload: TextPayload) {
+    super(engine, payload);
+    this.text = payload.text || '';
+    this.width = payload.width || this.engine.width;
     this.currentText = '';
     this.letterDuration = 0;
     this.startTime = 0;
@@ -47,6 +45,8 @@ export default class GameText extends Entity {
   }
 
   render() {
+    this.engine.ctx.font = "50px serif";
+    console.log(11);
     this.engine?.ctx?.fillText(this.currentText, this.position.x, this.position.y);
   }
 }

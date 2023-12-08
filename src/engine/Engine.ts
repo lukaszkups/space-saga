@@ -1,3 +1,4 @@
+import Entity from "./Entity";
 import GameLoop from "./GameLoop";
 import Scene from "./Scene";
 import { KeyableEntity, KeyableLayer, KeyableScene } from "./types";
@@ -54,6 +55,14 @@ export default class Engine {
   }
 
   addScene(scene: Scene) {
-    this.scenes[scene.id] = scene;
+    if (!this.scenes.hasOwnProperty(scene.id)) {
+      this.scenes[scene.id] = scene;
+    }
+  }
+
+  addEntity(entity: Entity) {
+    if (!this.entities.hasOwnProperty(entity.id)) {
+      this.entities[entity.id] = entity;
+    }
   }
 }

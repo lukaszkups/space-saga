@@ -1,4 +1,5 @@
 import Engine from "./Engine";
+import Entity from "./Entity";
 
 export interface LayerDetails {
   name: string;
@@ -44,5 +45,10 @@ export default class SceneLayer {
         entity.render();
       }
     });
+  }
+
+  addEntity(entity: Entity) {
+    this.engine.addEntity(entity);
+    this.entities.push(entity.id);
   }
 }
