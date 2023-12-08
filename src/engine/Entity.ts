@@ -1,23 +1,29 @@
 import Engine from "./Engine";
 import Sprite from "./Sprite";
+import Position from "./helpers/Position";
 import { Keyable, Pin, Polygon } from "./types";
+
+export interface EntityConfig {
+  name?: string;
+  position?: Position;
+  pins?: Pin[];
+  bindToLayer?: boolean;
+}
 
 export default class Entity {
   engine: Engine;
   id: number;
   name: string;
-  x: number;
-  y: number;
+  position: Position;
   props: Keyable;
-  pins: Pin;
+  pins: Pin[];
   bindToLayer: boolean;
 
-  constructor(engine: Engine, entity: Entity) {
+  constructor(engine: Engine, entity: EntityConfig) {
     this.engine = engine;
     this.id = engine._counter++;
-    this.name = entity.name;
-    this.x = entity.x || 0;
-    this.y = entity.y || 0;
+    this.name = entity.name || `Entity_${this.id}`;
+    this.position = entity.position || new Position(0, 0);
     this.props = {};
     this.pins = entity.pins || [];
     this.bindToLayer = entity.bindToLayer || false;

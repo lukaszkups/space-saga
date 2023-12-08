@@ -28,5 +28,4 @@ const txt = new GameText(game, { text: 'Hello world!' });
 
 txt.drawText(1000);
 
-
 game.loop.start();

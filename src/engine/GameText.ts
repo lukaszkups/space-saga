@@ -1,32 +1,28 @@
 import Engine from "./Engine";
-import Position from "./helpers/Position";
+import Entity, { EntityConfig } from "./Entity";
 
-export interface TextPayload {
+export interface TextPayload extends EntityConfig {
   text?: string;
   width?: number;
-  position?: Position;
 }
 
-export default class GameText {
-  id: number;
-  engine: Engine;
+export default class GameText extends Entity {
   text: string;
   width: number;
   startTime: number;
   currentText: string;
   letterDuration: number;
-  position: Position;
   finished: boolean;
 
-  constructor(engine: Engine, { text, width, position }: TextPayload) {
+  constructor(engine: Engine, { text, width }: TextPayload) {
+    super(engine, );
     this.engine = engine;
     this.id = engine._counter++;
     this.text = text || '';
     this.width = width || this.engine.width;
-    this.startTime = 0;
     this.currentText = '';
     this.letterDuration = 0;
-    this.position = position || new Position(0, 0);
+    this.startTime = 0;
     this.finished = false;
   }
 
