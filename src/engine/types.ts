@@ -1,5 +1,6 @@
 import Entity from "./Entity";
 import Layer from "./Layer";
+import Scene from "./Scene";
 import Sprite from "./Sprite";
 
 export interface Keyable {
@@ -17,6 +18,10 @@ export type KeyableLayer = {
 
 export type KeyableEntity = {
   [key: number]: Entity;
+}
+
+export type KeyableScene = {
+  [key: number]: Scene;
 }
 
 export type Coords = Array<[number, number]>;

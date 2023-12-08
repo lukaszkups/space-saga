@@ -11,55 +11,7 @@
   </style>
 </head>
 <body>
-  <canvas id="myCanvas" width="500" height="500"></canvas>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Get the canvas element
-      const canvas = document.getElementById("myCanvas");
-      const ctx = canvas.getContext("2d");
-
-      // Function to generate a random color
-      function getRandomColor() {
-        const letters = "0123456789ABCDEF";
-        let color = "#";
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
-
-      // Function to generate random coordinates for circles with minimum distance
-      function getRandomCoordinates(radius, minDistance, existingCircles) {
-        let x, y;
-        do {
-          x = Math.random() * (canvas.width - 2 * radius) + radius;
-          y = Math.random() * (canvas.height - 2 * radius) + radius;
-        } while (existingCircles.some(circle => Math.hypot(circle.x - x, circle.y - y) < minDistance));
-
-        return { x, y };
-      }
-
-      // Function to draw a circle
-      function drawCircle(x, y, radius, color) {
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.stroke();
-      }
-
-      // Array to store circle objects
-      const circles = [];
-
-      // Draw 20 non-overlapping colorful circles with a minimum distance of 50 pixels
-      for (let i = 0; i < 20; i++) {
-        const newCircle = getRandomCoordinates(10, 50, circles);
-        newCircle.radius = 10;
-        newCircle.color = getRandomColor();
-        circles.push(newCircle);
-        drawCircle(newCircle.x, newCircle.y, newCircle.radius, newCircle.color);
-      }
-    });
-  </script>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

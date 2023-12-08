@@ -39,11 +39,15 @@ export default class Entity {
     delete this.pins[pinName];
   }
 
-  update(delta: number) {
-    this.updateMovement(delta)
+  update(progress: number) {
+    // this.updateMovement(progress)
   }
 
-  updateMovement(delta: number) {
+  // updateMovement(progress: number) {
+
+  // }
+
+  render() {
 
   }
 }

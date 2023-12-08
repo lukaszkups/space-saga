@@ -1,26 +1,36 @@
-import Entity from "./Entity";
+import GameLoop from "./GameLoop";
+import Scene from "./Scene";
+import { KeyableEntity, KeyableLayer, KeyableScene } from "./types";
 
 export interface EngineConfig {
-  log: boolean;
-  width: number;
-  height: number;
+  log?: boolean;
+  width?: number;
+  height?: number;
 }
 
 export default class Engine {
   _counter: number;
   log: boolean;
-  entities: Entity[];
+  entities: KeyableEntity;
+  scenes: KeyableScene;
+  layers: KeyableLayer;
   canvas?: HTMLCanvasElement;
   ctx?: CanvasRenderingContext2D | null;
   width: number;
   height: number;
+  activeScene?: number;
+  loop: GameLoop;
 
   constructor(config: EngineConfig) {
     this._counter = 1;
     this.log = config.log || false;
-    this.entities = [];
+    this.entities = {};
+    this.scenes = {};
+    this.layers = {};
     this.width = config.width || 320;
     this.height = config.height || 180;
+    this.loop = new GameLoop(this);
+
     if (this.log) {
       console.info('Created new Engine with config:', config)
     }
@@ -41,5 +51,9 @@ export default class Engine {
     } catch(err) {
       throw new Error(`There was a problem when mounting engine: ${err}`);
     }
+  }
+
+  addScene(scene: Scene) {
+    this.scenes[scene.id] = scene;
   }
 }
