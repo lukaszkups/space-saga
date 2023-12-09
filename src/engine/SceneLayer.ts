@@ -23,6 +23,9 @@ export default class SceneLayer {
     // this.tiledBg = layerDetails.tiledBg || '';
     // this.scene = engine.scenes[layerDetails.parentSceneId];
     // this.scene.layerOrder.unshift(this.id);
+    if (this.engine.log) {
+      console.info('Created new Layer with config:', layerDetails);
+    }
   }
 
   // destroy(layerName) {
@@ -33,17 +36,15 @@ export default class SceneLayer {
   //   }
   // }
 
-  update(progress: number) {
-    this.entities.forEach((entityId: number) => this.engine.entities[entityId as number]?.update(progress));
+  update(progress: number, timeElapsed: number) {
+    this.entities.forEach((entityId: number) => this.engine.entities[entityId as number]?.update(progress, timeElapsed));
   }
 
   render() {
     // render entities of the layer
     this.entities.forEach((entityId) => {
       const entity = this.engine.entities[entityId];
-      if (entity && entity.hasOwnProperty('render') && typeof entity.render === 'function') {
-        entity.render();
-      }
+      entity?.render();
     });
   }
 

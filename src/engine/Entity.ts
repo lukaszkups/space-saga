@@ -45,7 +45,7 @@ export default class Entity {
     delete this.pins[pinName];
   }
 
-  update(progress: number) {
+  update(progress: number, timeElapsed: number) {
     // this.updateMovement(progress)
   }
 
@@ -54,6 +54,6 @@ export default class Entity {
   // }
 
   render() {
-
+    // console.log(999)
   }
 }

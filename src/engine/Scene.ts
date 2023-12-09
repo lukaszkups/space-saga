@@ -39,9 +39,9 @@ export default class Scene {
   //   }
   // }
 
-  update(progress: number) {
+  update(progress: number, timeElapsed: number) {
     this.layerOrder.forEach((layerId) => {
-      this.engine.layers[layerId]?.update(progress);
+      this.engine.layers[layerId]?.update(progress, timeElapsed);
     });
   }
   

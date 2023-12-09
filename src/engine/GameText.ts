@@ -10,6 +10,7 @@ export default class GameText extends Entity {
   text: string;
   width: number;
   startTime: number;
+  elapsed: number;
   currentText: string;
   letterDuration: number;
   finished: boolean;
@@ -21,32 +22,39 @@ export default class GameText extends Entity {
     this.currentText = '';
     this.letterDuration = 0;
     this.startTime = 0;
+    this.elapsed = 0;
     this.finished = false;
   }
 
   drawText(duration: number) {
+    this.elapsed = 0;
     this.finished = false;
     this.startTime = performance.now();
-    this.letterDuration = duration / this.text.length;
+    this.letterDuration = (duration / this.text.length);
   }
 
-  update(delta: number) {
-    const elapsed = this.startTime + delta;
-    const currentLetterIndex = Math.floor((elapsed / this.letterDuration) % this.text.length);
-
-    if (currentLetterIndex < this.text.length) {
-      this.currentText = this.text.substring(0, currentLetterIndex + 1);
-    } else if (!this.finished) {
-      this.currentText = this.text;
-      this.finished = true;
-      // TODO
-      // this.engine.events.emit('textComplete', this.id);
+  update(delta: number, timeElapsed: number) {
+    if (this.startTime && !this.finished) {
+      this.elapsed += timeElapsed;
+      console.log(this.startTime, this.elapsed, delta);
+      const currentLetterIndex = Math.ceil((this.elapsed / this.letterDuration) % this.text.length);
+      if (currentLetterIndex < this.text.length) {
+        this.currentText = this.text.substring(0, currentLetterIndex);
+      } else if (!this.finished) {
+        this.currentText = this.text;
+        this.finished = true;
+        console.warn('finished')
+        // TODO
+        // this.engine.events.emit('textComplete', this.id);
+      }
     }
   }
 
   render() {
-    this.engine.ctx.font = "50px serif";
-    console.log(11);
+    if (this.engine.ctx) {
+      // this.engine.ctx.font = "150px minimal";
+      // console.log(this.engine.ctx.font)
+    }
     this.engine?.ctx?.fillText(this.currentText, this.position.x, this.position.y);
   }
 }
