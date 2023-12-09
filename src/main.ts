@@ -30,7 +30,7 @@ const layer1 = new SceneLayer(game, {
 });
 scene1.addLayer(layer1);
 
-const txt = new GameText(game, { text: 'Hello world!' , position: new Position(100, 100) });
+const txt = new GameText(game, { text: 'Hello world!' , position: new Position(0, 0) });
 layer1.addEntity(txt);
 
 

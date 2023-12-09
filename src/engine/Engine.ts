@@ -11,6 +11,10 @@ export interface EngineConfig {
   fps?: number;
 }
 
+export interface CustomCanvasCtx extends CanvasRenderingContext2D {
+  letterSpacing: string;
+}
+
 export default class Engine {
   _counter: number;
   log: boolean;
@@ -52,24 +56,15 @@ export default class Engine {
         const cnvs = document.getElementById(c.id) as HTMLCanvasElement;
         this.canvas = cnvs;
         this.ctx = cnvs.getContext('2d');
+        if (this.ctx) {
+          (this.ctx as CustomCanvasCtx).letterSpacing = '1px';
+          this.ctx.textBaseline = 'top';
+        }
       }, 0);
     } catch(err) {
       throw new Error(`There was a problem when mounting engine: ${err}`);
     }
   }
-
-  // not working in firefox :/
-  // async addFont(fontName: string, fontUrl: string, fontConfig: string) {
-  //   const ff = new FontFace(fontName, `url(${fontUrl})`);
-  //   const font = await ff.load();
-  //   document.fonts.add(font);
-  //   if (this.ctx) {
-  //     this.ctx.font = fontConfig;
-  //   }
-  //   if (this.log) {
-  //     console.log('Font added', fontName);
-  //   }
-  // }
 
   async addFont(fontName: string, fontUrl: string, fontConfig: string) {
     const styleTxt = `
@@ -77,7 +72,7 @@ export default class Engine {
         font-family: '${fontName}';
         font-style: normal;
         font-weight: normal;
-        src: local('${fontName}'), url(${fontUrl}) format('${(fontTypes as Keyable)[fontUrl.split('.')[1]]}');
+        src: local('${fontName}'), url(${fontUrl}) format('${(fontTypes as Keyable)[fontUrl.split('.').pop() as string]}');
       }`
     const tag = document.createElement('style');
     tag.innerHTML = styleTxt;
@@ -88,13 +83,6 @@ export default class Engine {
       }
     }, 0);
   }
-
-
-  // addFont(fontConfig: string) {
-  //   if (this.ctx) {
-  //     this.ctx.font = fontConfig;
-  //   }
-  // }
 
   addScene(scene: Scene) {
     if (!this.scenes.hasOwnProperty(scene.id)) {

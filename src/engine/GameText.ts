@@ -4,6 +4,8 @@ import Entity, { EntityConfig } from "./Entity";
 export interface TextPayload extends EntityConfig {
   text?: string;
   width?: number;
+  fontSize?: number;
+  fontFamily?: string;
 }
 
 export default class GameText extends Entity {
@@ -14,6 +16,8 @@ export default class GameText extends Entity {
   currentText: string;
   letterDuration: number;
   finished: boolean;
+  fontSize: number;
+  fontFamily: string;
 
   constructor(engine: Engine, payload: TextPayload) {
     super(engine, payload);
@@ -24,6 +28,8 @@ export default class GameText extends Entity {
     this.startTime = 0;
     this.elapsed = 0;
     this.finished = false;
+    this.fontSize = payload.fontSize || 160;
+    this.fontFamily = payload.fontFamily || 'minimal';
   }
 
   drawText(duration: number) {
@@ -43,7 +49,7 @@ export default class GameText extends Entity {
       } else if (!this.finished) {
         this.currentText = this.text;
         this.finished = true;
-        console.warn('finished')
+        console.info('finished')
         // TODO
         // this.engine.events.emit('textComplete', this.id);
       }
@@ -52,8 +58,7 @@ export default class GameText extends Entity {
 
   render() {
     if (this.engine.ctx) {
-      // this.engine.ctx.font = "150px minimal";
-      // console.log(this.engine.ctx.font)
+      this.engine.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
     }
     this.engine?.ctx?.fillText(this.currentText, this.position.x, this.position.y);
   }
