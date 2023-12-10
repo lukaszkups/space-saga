@@ -16,9 +16,8 @@ const game = new Engine({
 const app = document.getElementById('app');
 game.mount(app as HTMLElement);
 
-game.addFont('minimal', 'minimal5x7.otf', '150px mimnimal');
 
-window.game = game;
+(window as any).game = game;
 
 const scene1 = new Scene(game, 'Scene1');
 game.addScene(scene1);
@@ -29,12 +28,13 @@ const layer1 = new SceneLayer(game, {
   visible: true,
 });
 scene1.addLayer(layer1);
-
 const txt = new GameText(game, { text: 'Hello world!' , position: new Position(0, 0) });
+await txt.addFont('minimal', 'minimal5x7.otf', '150px mimnimal');
 layer1.addEntity(txt);
 
+await game.loop.start();
 
-game.loop.start();
-setTimeout(() => {
-  txt.drawText(2);
-}, 1000)
+console.log(3, document.fonts.check('16px minimal'))
+txt.drawText(2);
+// await setTimeout(() => {
+// }, 100)

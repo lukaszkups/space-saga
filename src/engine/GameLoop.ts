@@ -1,4 +1,5 @@
 import Engine from "./Engine";
+import { delay } from "./helpers/timing";
 
 export default class GameLoop {
   engine: Engine;
@@ -58,12 +59,11 @@ export default class GameLoop {
     this.gameLoop = window.requestAnimationFrame((_timestamp) => this.loop(_timestamp));
   }
 
-  start() {
+  async start() {
     // we need to wait a bit for canvas to mount in Document's HTML DOM
-    setTimeout(() => {
-      this.lastRender = 0;
-      this.gameLoop = window.requestAnimationFrame((_timestamp) => this.loop(_timestamp));
-    }, 0);
+    await delay(100);
+    this.lastRender = 0;
+    this.gameLoop = window.requestAnimationFrame((_timestamp) => this.loop(_timestamp));
   }
 
   stop() {

@@ -3,7 +3,7 @@ import Sprite from "./Sprite";
 import Position from "./helpers/Position";
 import { Keyable, Pin, Polygon } from "./types";
 
-export interface EntityConfig {
+export interface EntityPayload {
   name?: string;
   position?: Position;
   pins?: Pin[];
@@ -19,7 +19,7 @@ export default class Entity {
   pins: Pin[];
   bindToLayer: boolean;
 
-  constructor(engine: Engine, entity: EntityConfig) {
+  constructor(engine: Engine, entity: EntityPayload) {
     this.engine = engine;
     this.id = engine._counter++;
     this.name = entity.name || `Entity_${this.id}`;

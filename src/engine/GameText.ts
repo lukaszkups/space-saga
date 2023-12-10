@@ -1,7 +1,9 @@
 import Engine from "./Engine";
-import Entity, { EntityConfig } from "./Entity";
+import Entity, { EntityPayload } from "./Entity";
+import { fontTypes } from "./helpers/enums";
+import { delay } from "./helpers/timing";
 
-export interface TextPayload extends EntityConfig {
+export interface TextPayload extends EntityPayload {
   text?: string;
   width?: number;
   fontSize?: number;
@@ -42,7 +44,6 @@ export default class GameText extends Entity {
   update(delta: number, timeElapsed: number) {
     if (this.startTime && !this.finished) {
       this.elapsed += timeElapsed;
-      console.log(this.startTime, this.elapsed, delta);
       const currentLetterIndex = Math.ceil((this.elapsed / this.letterDuration) % this.text.length);
       if (currentLetterIndex < this.text.length) {
         this.currentText = this.text.substring(0, currentLetterIndex);
@@ -61,5 +62,27 @@ export default class GameText extends Entity {
       this.engine.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
     }
     this.engine?.ctx?.fillText(this.currentText, this.position.x, this.position.y);
+  }
+
+  async addFont(fontName: string, fontUrl: string, fontConfig: string) {
+    const styleTxt = `
+      @font-face {
+        font-family: '${fontName}';
+        font-style: normal;
+        font-weight: normal;
+        src: local('${fontName}'), url(${fontUrl}) format('${(fontTypes as Keyable)[fontUrl.split('.').pop() as string]}');
+      }`
+    const tag = document.createElement('style');
+    tag.innerHTML = styleTxt;
+    document.body.appendChild(tag);
+    if (this.engine.ctx) {
+      this.engine.ctx.font = fontConfig;
+    }
+    // await delay(1000);
+    return document.fonts.ready;
+    // console.log(1, document.fonts.check(`${this.fontSize}px ${this.fontFamily}`))
+    // do {
+    //   await delay(1000);
+    // } while (!document.fonts.check(`${this.fontSize}px ${this.fontFamily}`));
   }
 }

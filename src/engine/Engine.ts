@@ -66,24 +66,6 @@ export default class Engine {
     }
   }
 
-  async addFont(fontName: string, fontUrl: string, fontConfig: string) {
-    const styleTxt = `
-      @font-face {
-        font-family: '${fontName}';
-        font-style: normal;
-        font-weight: normal;
-        src: local('${fontName}'), url(${fontUrl}) format('${(fontTypes as Keyable)[fontUrl.split('.').pop() as string]}');
-      }`
-    const tag = document.createElement('style');
-    tag.innerHTML = styleTxt;
-    document.body.appendChild(tag);
-    await setTimeout(() => {
-      if (this.ctx) {
-        this.ctx.font = fontConfig;
-      }
-    }, 0);
-  }
-
   addScene(scene: Scene) {
     if (!this.scenes.hasOwnProperty(scene.id)) {
       this.scenes[scene.id] = scene;

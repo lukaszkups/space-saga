@@ -1,5 +1,5 @@
 import Entity from "./Entity";
-import Layer from "./Layer";
+import Layer from "./SceneLayer";
 import Scene from "./Scene";
 import Sprite from "./Sprite";
 
