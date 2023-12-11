@@ -14,7 +14,7 @@ export default class GameLoop {
     this.engine = engine;
     this.canvas = engine.canvas;
     this.fps = engine.fps;
-    this.interval = Math.floor(1000 / this.fps);
+    this.interval = 1000 / this.fps;
     this.counter = 0;
     this.lastRender = 0;
     if (this.engine.log) {
@@ -22,13 +22,13 @@ export default class GameLoop {
     }
   }
 
-  update(progress: number) {
+  update(timestamp: number, progress: number) {
     // Update the state of the world for the elapsed time since last render
-    const p = Math.floor(progress / 30 * 1000);
-    const t = p/1000/this.fps
+    const p = progress / 30 * 1000;
+    const t = p/1000/this.fps;
     // console.log(progress, p);
     if (this.engine.activeScene && this.engine.scenes[this.engine.activeScene]) {
-      this.engine.scenes[this.engine.activeScene]?.update(p, t);
+      this.engine.scenes[this.engine.activeScene]?.update(timestamp, p);
     }
     // this.engine.events.handleEvents(p);
     // this.engine.activeScene.update(p);
@@ -48,13 +48,13 @@ export default class GameLoop {
   }
 
   loop(timestamp: number) {
-    const progress = Math.floor(timestamp - this.lastRender);
+    const progress = timestamp - this.lastRender;
     // console.log(this.interval, progress)
     if (progress > this.interval) {
-      this.update(progress);  
+      this.update(timestamp, progress);  
       this.clear();
       this.render();
-      this.lastRender = Math.floor(timestamp - (progress % this.interval));
+      this.lastRender = timestamp - (progress % this.interval);
     }
     this.gameLoop = window.requestAnimationFrame((_timestamp) => this.loop(_timestamp));
   }

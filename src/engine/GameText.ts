@@ -1,7 +1,9 @@
+import { resolve } from "path";
 import Engine from "./Engine";
 import Entity, { EntityPayload } from "./Entity";
 import { fontTypes } from "./helpers/enums";
 import { delay } from "./helpers/timing";
+import { Keyable } from "./types";
 
 export interface TextPayload extends EntityPayload {
   text?: string;
@@ -38,19 +40,20 @@ export default class GameText extends Entity {
     this.elapsed = 0;
     this.finished = false;
     this.startTime = performance.now();
-    this.letterDuration = (duration / this.text.length);
+    this.letterDuration = ((duration*10000) / this.text.length);
   }
 
-  update(delta: number, timeElapsed: number) {
+  update(timestamp: number) {
     if (this.startTime && !this.finished) {
-      this.elapsed += timeElapsed;
+      this.elapsed += timestamp;
       const currentLetterIndex = Math.ceil((this.elapsed / this.letterDuration) % this.text.length);
       if (currentLetterIndex < this.text.length) {
         this.currentText = this.text.substring(0, currentLetterIndex);
       } else if (!this.finished) {
         this.currentText = this.text;
         this.finished = true;
-        console.info('finished')
+        this.startTime = 0;
+        console.info('finished', this.elapsed)
         // TODO
         // this.engine.events.emit('textComplete', this.id);
       }
@@ -76,11 +79,59 @@ export default class GameText extends Entity {
     tag.innerHTML = styleTxt;
     document.body.appendChild(tag);
     if (this.engine.ctx) {
-      this.engine.ctx.font = fontConfig;
+      this.engine.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
     }
     // await delay(1000);
-    return document.fonts.ready;
+    // const checkForFontsReady = async (): Promise<void> => {
+    //   console.log(123, document.fonts.check(`${this.fontSize}px ${this.fontFamily}`), document.readyState);
+    //   // if (document.fonts.check(`${this.fontSize}px ${this.fontFamily}`)) {
+    //   //   Promise.resolve();
+    //   // } else {
+    //   //   setTimeout(() => {
+    //   //     checkForFontsReady();
+    //   //   }, 100);
+    //   // }
+    //   return new Promise((resolve) => {
+    //     while (document.readyState === 'interactive') {
+    //     // while (!document.fonts.check(`${this.fontSize}px ${this.fontFamily}`)) {
+    //       await new Promise(() => setTimeout(async () => {
+    //         await checkForFontsReady();
+    //       }, 1000));
+    //     }
+    //     console.log(1);
+    //     resolve();
+    //     console.log(2);
+    //   });
+    // }
+    const checkForFontsReady = async (): Promise<void> => {
+      
+      return new Promise((resolve) => {
+        const checkFontsAndResolve = () => {
+          console.log(123, document.fonts.check(`${this.fontSize}px ${this.fontFamily}`), document.readyState);
+          if (document.readyState === 'complete' || document.fonts.check(`${this.fontSize}px ${this.fontFamily}`)) {
+            console.log(1);
+            resolve();
+            console.log(2);
+          } else {
+            setTimeout(checkFontsAndResolve, 0);
+          }
+          // if (document.readyState === 'interactive' && document.fonts.check(`${this.fontSize}px ${this.fontFamily}`)) {
+          //   console.log(1);
+          //   resolve();
+          //   console.log(2);
+          // } else {
+          //   setTimeout(checkFontsAndResolve, 1000);
+          // }
+        };
+    
+        checkFontsAndResolve();
+      });
+    };
+    await checkForFontsReady();
+    await delay(1000);
+    console.log(12);
     // console.log(1, document.fonts.check(`${this.fontSize}px ${this.fontFamily}`))
+    // return document.fonts.ready;
     // do {
     //   await delay(1000);
     // } while (!document.fonts.check(`${this.fontSize}px ${this.fontFamily}`));

@@ -28,13 +28,14 @@ const layer1 = new SceneLayer(game, {
   visible: true,
 });
 scene1.addLayer(layer1);
-const txt = new GameText(game, { text: 'Hello world!' , position: new Position(0, 0) });
-await txt.addFont('minimal', 'minimal5x7.otf', '150px mimnimal');
+const txt = new GameText(game, { text: 'Helloooooooooooooooo world!' , position: new Position(0, 0) });
+await txt.addFont('minimal', 'minimal5x7.otf', '150px minimal');
+console.log(3, document.fonts.check('16px minimal'))
 layer1.addEntity(txt);
 
 await game.loop.start();
 
-console.log(3, document.fonts.check('16px minimal'))
-txt.drawText(2);
+txt.drawText(10);
+console.log(33, document.fonts.check('16px minimal'))
 // await setTimeout(() => {
 // }, 100)
