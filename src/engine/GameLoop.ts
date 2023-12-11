@@ -25,8 +25,9 @@ export default class GameLoop {
   update(timestamp: number, progress: number) {
     // Update the state of the world for the elapsed time since last render
     const p = progress / 30 * 1000;
-    const t = p/1000/this.fps;
-    // console.log(progress, p);
+    // TODO: check if still needed?
+    // const t = p/1000/this.fps;
+    // console.log(timestamp, progress, p, t);
     if (this.engine.activeScene && this.engine.scenes[this.engine.activeScene]) {
       this.engine.scenes[this.engine.activeScene]?.update(timestamp, p);
     }
