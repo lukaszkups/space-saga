@@ -3,7 +3,6 @@ import GameText from './engine/GameText';
 import Scene from './engine/Scene';
 import SceneLayer from './engine/SceneLayer';
 import Position from './engine/helpers/Position';
-// import './assets/Minecraft.ttf';
 import './style.css'
 
 
@@ -11,12 +10,13 @@ const game = new Engine({
   width: 640,
   height: 480,
   log: true,
+  resizable: true,
 });
 
 const app = document.getElementById('app');
-// await game.addFont('minimal', 'minimal5x7.otf', '16px minimal');
 game.mount(app as HTMLElement);
 
+await game.addFont('Minecraft', 'Minecraft.ttf');
 await game.addFont('minimal', 'minimal5x7.otf');
 
 (window as any).game = game;
