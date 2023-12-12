@@ -3,6 +3,7 @@ import GameLoop from "./GameLoop";
 import Scene from "./Scene";
 import { Keyable, KeyableEntity, KeyableLayer, KeyableScene } from "./types";
 import { fontTypes } from './helpers/enums';
+import { delay } from "./helpers/timing";
 
 export interface EngineConfig {
   log?: boolean;
@@ -76,5 +77,11 @@ export default class Engine {
     if (!this.entities.hasOwnProperty(entity.id)) {
       this.entities[entity.id] = entity;
     }
+  }
+
+  async addFont(fontName: string, fontUrl: string) {
+    const myFont = new FontFace(fontName, `url(${fontUrl})`);
+    await myFont.load();
+    document.fonts.add(myFont);
   }
 }

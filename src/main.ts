@@ -14,8 +14,10 @@ const game = new Engine({
 });
 
 const app = document.getElementById('app');
+// await game.addFont('minimal', 'minimal5x7.otf', '16px minimal');
 game.mount(app as HTMLElement);
 
+await game.addFont('minimal', 'minimal5x7.otf');
 
 (window as any).game = game;
 
@@ -33,7 +35,6 @@ const txt = new GameText(game, {
   position: new Position(10, 0),
   fontSize: 64,
 });
-await txt.addFont('minimal', 'minimal5x7.otf', '16px minimal');
 console.log(3, document.fonts.check('16px minimal'))
 layer1.addEntity(txt);
 
