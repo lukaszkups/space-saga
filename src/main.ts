@@ -1,4 +1,4 @@
-import Engine from './engine/Engine'
+import Engine from './engine/Engine';
 import GameText from './engine/GameText';
 import Scene from './engine/Scene';
 import SceneLayer from './engine/SceneLayer';

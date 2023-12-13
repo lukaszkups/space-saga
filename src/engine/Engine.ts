@@ -116,13 +116,15 @@ export default class Engine {
         width = height / canvasRatio;
       } else {
         width = window.innerWidth;
-        height = width * canvasRatio;
+        height = (width * canvasRatio);
       }
-      this.canvas.parentElement.style.width = `${Math.floor(width)}px`;
-      this.canvas.parentElement.style.height = `${Math.floor(height)}px`;
-      console.log('resize', canvasRatio, windowRatio, this.canvas?.width, this.canvas?.height)
+      if (this.canvas) {
+        this.canvas.style.width = `${Math.floor(width)}px`;
+        this.canvas.style.height = `${Math.floor(height)}px`;
+      }
     };
     window.addEventListener('resize', resize, false);
+    resize();
   }
 
   addResizableStyles(element: HTMLElement) {
