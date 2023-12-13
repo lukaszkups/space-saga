@@ -22,6 +22,8 @@ await game.loop.start(); // start the game
 
 ## Loading local custom fonts (before game loop start!)
 
+Best to put font files inside `public` folder
+
 ```
 await game.addFont('Minecraft', 'Minecraft.ttf');
 await game.addFont('minimal', 'minimal5x7.otf');
