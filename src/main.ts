@@ -30,17 +30,13 @@ const layer1 = new SceneLayer(game, {
   visible: true,
 });
 scene1.addLayer(layer1);
-const txt = new GameText(game, { 
-  text: 'Hello world! This is an example of multiline text writing inside canvas!', 
-  position: new Position(10, 0),
-  fontSize: 64,
-});
-console.log(3, document.fonts.check('16px minimal'))
-layer1.addEntity(txt);
+
+// const txt = new GameText(game, { 
+//   text: 'Hello world! This is an example of multiline text writing inside canvas!', 
+//   position: new Position(10, 0),
+//   fontSize: 64,
+// });
+// layer1.addEntity(txt);
+// txt.drawText(10, true);
 
 await game.loop.start();
-
-txt.drawText(10, true);
-console.log(33, document.fonts.check('16px minimal'))
-// await setTimeout(() => {
-// }, 100)
