@@ -39,4 +39,6 @@ scene1.addLayer(layer1);
 // layer1.addEntity(txt);
 // txt.drawText(10, true);
 
+
+
 await game.loop.start();

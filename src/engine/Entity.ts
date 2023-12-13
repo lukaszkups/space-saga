@@ -1,13 +1,15 @@
 import Engine from "./Engine";
 import Sprite from "./Sprite";
 import Position from "./helpers/Position";
-import { Keyable, Pin, Polygon } from "./types";
+import { Keyable, Polygon } from "./types";
 
 export interface EntityPayload {
   name?: string;
   position?: Position;
-  pins?: Pin[];
   bindToLayer?: boolean;
+  width?: number;
+  height?: number;
+  shape?: Polygon;
 }
 
 export default class Entity {
@@ -16,8 +18,10 @@ export default class Entity {
   name: string;
   position: Position;
   props: Keyable;
-  pins: Pin[];
   bindToLayer: boolean;
+  width?: number;
+  height?: number;
+  shape?: Polygon;
 
   constructor(engine: Engine, entity: EntityPayload) {
     this.engine = engine;
@@ -25,24 +29,22 @@ export default class Entity {
     this.name = entity.name || `Entity_${this.id}`;
     this.position = entity.position || new Position(0, 0);
     this.props = {};
-    this.pins = entity.pins || [];
     this.bindToLayer = entity.bindToLayer || false;
+    this.width = entity.width;
+    this.height = entity.height;
+    this.shape = entity.shape;
+    // if width && height is defined but no shape, then create polygon shape with relative points to Entity
+    if (!this.shape && this.width && this.height) {
+      this.shape = [
+        [0, 0],
+        [this.width, 0],
+        [0, this.height],
+        [this.width, this.height]
+      ];
+    }
     if(this.engine.log) {
       console.info('New Entity Created:', this);
     }
-  }
-
-  addPin (pinName: string, pin: Polygon | Entity | Sprite) {
-    this.pins[pinName] = pin;
-    if(this.engine.log) {
-      console.info(`Pin added to: ${this.name}: ${pinName}:`, pin);
-    }
-  }
-  removePin (pinName: string) {
-    if(this.engine.log) {
-      console.info(`Pin removed from: ${this.name}: ${pinName}:`, this.pins[pinName]);
-    }
-    delete this.pins[pinName];
   }
 
   update(progress: number, timeElapsed: number) {
