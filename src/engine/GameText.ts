@@ -46,9 +46,9 @@ export default class GameText extends Entity {
     this.letterDuration = ((duration*10000) / this.text.length);
   }
 
-  update(timestamp: number) {
+  update(progress: number) {
     if (this.startTime && !this.finished) {
-      this.elapsed += timestamp;
+      this.elapsed += progress;
       const currentLetterIndex = Math.ceil((this.elapsed / this.letterDuration) % this.text.length);
       if (currentLetterIndex < this.text.length) {
         this.currentText = this.text.substring(0, currentLetterIndex);

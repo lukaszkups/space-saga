@@ -1,6 +1,7 @@
 import Engine from "./Engine";
 import Sprite from "./Sprite";
 import Position from "./helpers/Position";
+import arePolygonsIntersecting from "./helpers/axisTheorem";
 import { Keyable, Polygon } from "./types";
 
 export interface EntityPayload {
@@ -36,10 +37,10 @@ export default class Entity {
     // if width && height is defined but no shape, then create polygon shape with relative points to Entity
     if (!this.shape && this.width && this.height) {
       this.shape = [
-        [0, 0],
-        [this.width, 0],
-        [0, this.height],
-        [this.width, this.height]
+        [0, 0], // top-left point
+        [this.width, 0], // top-right point
+        [this.width, this.height], // bottom-right point (this and point below are in such order to have 4-point polygon look like square)
+        [0, this.height] //bottom-left
       ];
     }
     if(this.engine.log) {
@@ -47,15 +48,15 @@ export default class Entity {
     }
   }
 
-  update(progress: number, timeElapsed: number) {
-    // this.updateMovement(progress)
+  collides(entityId: number) {
+    const entity = this.engine.entities[entityId];
+    if (this.shape && this.shape.length && entity && entity.shape?.length) {
+      return arePolygonsIntersecting(this.shape, entity.shape)
+    }
+    return false;
   }
 
-  // updateMovement(progress: number) {
+  update(progress: number, timeElapsed: number) {}
 
-  // }
-
-  render() {
-    // console.log(999)
-  }
+  render() {}
 }

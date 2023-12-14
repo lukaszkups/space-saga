@@ -33,7 +33,7 @@ export default class Sprite extends Entity {
     this.ctx.save();
     // check for alpha/opacity
     if (this.opacity !== 100) {
-      this.ctx.globalAlpha = this.opacity;
+      this.ctx.globalAlpha = this.opacity/100;
     }
     // check for rotation (independent from camera)
     if (this.angle !== 0) {

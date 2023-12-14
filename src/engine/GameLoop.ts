@@ -12,7 +12,6 @@ export default class GameLoop {
 
   constructor (engine: Engine) {
     this.engine = engine;
-    this.canvas = engine.canvas;
     this.fps = engine.fps;
     this.interval = 1000 / this.fps;
     this.counter = 0;
@@ -44,16 +43,15 @@ export default class GameLoop {
   }
 
   clear() {
-    // console.log('clear')
-    this.engine?.ctx?.clearRect(0, 0, this.canvas?.width || 0, this.canvas?.height || 0);
+    this.engine?.ctx?.clearRect(0, 0, this.engine?.ctx.canvas?.width || 0, this.engine?.ctx.canvas?.height || 0);
   }
 
   loop(timestamp: number) {
     const progress = timestamp - this.lastRender;
     // console.log(this.interval, progress)
     if (progress > this.interval) {
-      this.update(timestamp, progress);  
       this.clear();
+      this.update(timestamp, progress);  
       this.render();
       this.lastRender = timestamp - (progress % this.interval);
     }

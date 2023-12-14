@@ -62,5 +62,19 @@ const txt = new GameText(game, {
   fontSize: 64,
 });
 layer1.addEntity(txt);
+// start rendering/drawing, letter by letter
 txt.drawText(10, true);
+```
+
+## Draw collider
+
+```
+const col1 = new Collider(game, {
+  position: new Position(10, 20),
+  width: 75,
+  height: 50,
+  color: '#0000ff'
+});
+
+layer1.addEntity(col1);
 ```

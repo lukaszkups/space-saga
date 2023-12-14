@@ -10,6 +10,6 @@ export default class Position {
   }
 }
 
-export const projectPolygon = (position: Position, polygon: Polygon): Polygon => {
+export const getRelativePolygon = (position: Position, polygon: Polygon): Polygon => {
   return polygon.map((point: [number, number]) => ([ position.x + point[0], position.y + point[1] ]));
 }
