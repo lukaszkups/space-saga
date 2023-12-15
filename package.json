@@ -12,5 +12,8 @@
     "@types/node": "^20.10.4",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "pixi.js": "^7.3.2"
   }
 }
