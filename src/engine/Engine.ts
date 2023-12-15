@@ -60,10 +60,12 @@ export default class Engine {
       await setTimeout(() => {
         const cnvs = document.getElementById(c.id) as HTMLCanvasElement;
         this.canvas = cnvs;
-        this.ctx = cnvs.getContext('2d');
+        this.ctx = cnvs.getContext('2d');          
         if (this.ctx) {
+          // override some default values
           (this.ctx as CustomCanvasCtx).letterSpacing = '1px';
           this.ctx.textBaseline = 'top';
+          this.ctx.imageSmoothingEnabled = false;
         }
         this.addEvents();
       }, 0);

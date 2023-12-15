@@ -49,12 +49,13 @@ export default class GameLoop {
   loop(timestamp: number) {
     const progress = timestamp - this.lastRender;
     // console.log(this.interval, progress)
-    if (progress > this.interval) {
+    // TODO: commented out because timings were going out of place (multiline text takes 14s to render instead of 10s)
+    // if (progress > this.interval) {
       this.clear();
       this.update(timestamp, progress);  
       this.render();
       this.lastRender = timestamp - (progress % this.interval);
-    }
+    // }
     this.gameLoop = window.requestAnimationFrame((_timestamp) => this.loop(_timestamp));
   }
 

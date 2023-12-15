@@ -8,8 +8,8 @@ import './style.css'
 
 
 const game = new Engine({
-  width: 640,
-  height: 480,
+  width: 320,
+  height: 180,
   log: true,
   resizable: true,
 });
@@ -19,6 +19,7 @@ game.mount(app as HTMLElement);
 
 await game.addFont('Minecraft', 'Minecraft.ttf');
 await game.addFont('minimal', 'minimal5x7.otf');
+await game.addFont('tmnt', 'tmnt.otf');
 
 (window as any).game = game;
 
@@ -35,7 +36,9 @@ scene1.addLayer(layer1);
 const txt = new GameText(game, { 
   text: 'Hello world! This is an example of multiline text writing inside canvas!', 
   position: new Position(10, 0),
-  fontSize: 64,
+  fontSize: 12,
+  fontFamily: 'tmnt',
+  color: '#ff0000'
 });
 layer1.addEntity(txt);
 txt.drawText(10, true);
