@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
 import Engine from "./Engine";
+import Layer from "./Layer";
 
 export default class Scene {
   engine: Engine;
   id: string;
   pixi: PIXI.Container;
-  layers: [];
+  layers: string[];
   
   constructor(engine: Engine) {
     this.engine = engine;
@@ -23,5 +24,17 @@ export default class Scene {
 
   render(delta: number) {
 
+  }
+
+  addLayer(layer: Layer) {
+    // Add to pixi context if possible
+    if (layer.pixi) {
+      this.pixi.addChild(layer.pixi);
+    }
+    // add to Engine context
+    this.layers.push(layer.id);
+    if (!this.engine.layers.hasOwnProperty(layer.id)) {
+      this.engine.layers[layer.id] = layer;
+    }
   }
 }

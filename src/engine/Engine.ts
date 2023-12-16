@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { Keyable } from './types';
 import Scene from './Scene';
+import Layer from './Layer';
 import Entity from './Entity';
 import Loop from './Loop';
 
@@ -14,9 +15,9 @@ export default class Engine {
   width: number;
   height: number;
   pixi: PIXI.Application;
-  entities: Keyable;
-  scenes: Keyable;
-  layers: Keyable;
+  entities: Keyable<Entity>;
+  scenes: Keyable<Scene>;
+  layers: Keyable<Layer>;
   activeScene?: string;
   loop: Loop;
 
@@ -48,12 +49,12 @@ export default class Engine {
   setActiveScene(sceneId: string) {
     // find previously active scene
     if (this.activeScene && this.scenes.hasOwnProperty(this.activeScene)) {
-      (this.scenes[this.activeScene] as PIXI.Container).visible = false;
+      this.scenes[this.activeScene].pixi.visible = false;
     }
     // activate new scene
     this.activeScene = sceneId;
     if (this.scenes.hasOwnProperty(sceneId)) {
-      (this.scenes[sceneId] as PIXI.Container).visible = true;
+      this.scenes[sceneId].pixi.visible = true;
     }
   }
 

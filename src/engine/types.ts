@@ -1,3 +1,3 @@
-export interface Keyable {
-  [key: string]: Object
+export interface Keyable<type> {
+  [key: string]: type;
 }
