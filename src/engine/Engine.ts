@@ -30,7 +30,8 @@ export default class Engine {
     this.layers = {};
     this.width = payload?.width || 320;
     this.height = payload?.height || 180;
-    this.pixi = new PIXI.Application({ width: this.width, height: this.height }) as PIXI.Application;
+    this.pixi = new PIXI.Application({ width: this.width, height: this.height, autoDensity: true }) as PIXI.Application;
+    
     this.loop = new Loop(this);
     this.assets = new Assets(this);
     // @ts-ignore-next-line
@@ -40,7 +41,10 @@ export default class Engine {
   mount(element: HTMLElement = document.body) {
     if (element) {
       element.appendChild(this.pixi.view as unknown as Node);
+    } else {
+      document.body.appendChild(this.pixi.view as unknown as Node);
     }
+
     this.addResizeEvents()
   }
 
