@@ -10,9 +10,16 @@ export default class Assets {
     this.assetsList = [];
   }
 
+  // images, music etc. except fonts (?)
   addAssets(assetName: string, assetUrl: string) {
     PIXIAssets.add({ alias: assetName, src: assetUrl });
     this.assetsList.push(assetName);
+  }
+
+  async addFont(fontName: string, fontUrl: string) {
+    const myFont = new FontFace(fontName, `url(${fontUrl})`);
+    await myFont.load();
+    document.fonts.add(myFont);
   }
 
   async loadAssets(assetsList: string[] = this.assetsList): Promise<void> {
