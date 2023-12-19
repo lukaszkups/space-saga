@@ -24,10 +24,12 @@ const txt1 = new Entity(game, {
   y: 25 
 });
 
-txt1.pixi = new PIXI.Text('This is an example text', new PIXI.TextStyle({ fontFamily: 'tmnt', fontSize: 12, fill: '#fff', wordWrap: true, wordWrapWidth: 320 }));
+txt1.pixi = new PIXI.BitmapText('This is an example text', { fontSize: 7, fontName: 'tmnt', tint: '#fff' });
 txt1.pixi.x = 10;
 txt1.pixi.y = 10;
-
+// txt1.pixi.scale.set(0.5, 0.5);
+// txt1.pixi.scale.x = 0.75;
+// txt1.pixi.scale.y = 0.75;
 Layer1.addEntity(txt1);
 
 game.loop.start();

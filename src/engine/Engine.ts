@@ -30,12 +30,13 @@ export default class Engine {
     this.layers = {};
     this.width = payload?.width || 320;
     this.height = payload?.height || 180;
+    PIXI.settings.ROUND_PIXELS = true;
     this.pixi = new PIXI.Application({ width: this.width, height: this.height, autoDensity: true }) as PIXI.Application;
-    
     this.loop = new Loop(this);
     this.assets = new Assets(this);
     // @ts-ignore-next-line
-    window.engine = this.pixi;
+    window.engine = this;
+    window.pixi = PIXI;
   }
 
   mount(element: HTMLElement = document.body) {
@@ -96,7 +97,7 @@ export default class Engine {
 
     window.addEventListener("resize", () => {
       const { width, height } = calculateSize();
-      this.pixi.renderer.resize(width, height);
+      // this.pixi.renderer.resize(width, height);
     });
   }
 }

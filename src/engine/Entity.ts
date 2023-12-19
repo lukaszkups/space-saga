@@ -11,7 +11,7 @@ export default class Entity {
   engine: Engine;
   id: string;
   position: Position;
-  pixi?: PIXI.Sprite | PIXI.ParticleContainer | PIXI.Text | PIXI.Graphics | PIXI.AnimatedSprite;
+  pixi?: PIXI.Sprite | PIXI.ParticleContainer | PIXI.Text | PIXI.Graphics | PIXI.AnimatedSprite | PIXI.BitmapText;
 
   constructor(engine: Engine, payload?: EntityPayload) {
     this.engine = engine;
